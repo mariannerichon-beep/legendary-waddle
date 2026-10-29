@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17365d">
+<meta name="description" content="Un jeu coopératif familial pour échanger, s'entraider et rire ensemble.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>La Famille en Jeu</title>
+<style>
+:root{--navy:#17365d;--green:#299b59;--yellow:#e5a900;--pink:#e94378;--blue:#159ad0;--purple:#8152b7;--ink:#20334b;--muted:#64748b;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;background:#f7f9fc;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.wrap{max-width:900px;margin:auto;padding:16px}.hero{background:linear-gradient(125deg,#e3f7e9,#e3f4ff 55%,#f8e9ff);border-radius:24px;padding:24px;margin-bottom:16px}
+.kicker{font-size:.75rem;letter-spacing:.12em;font-weight:800;color:#52647a}.hero h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1.02;color:var(--navy);margin:.45rem 0}.hero h1 span{color:var(--green)}.hero p{max-width:600px}
+.panel{background:white;border:1px solid #e7eaf0;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #17365d08}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.small{font-size:.84rem;color:var(--muted)}label{font-weight:750;font-size:.9rem;display:block;margin-bottom:6px}
+input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:white;color:var(--ink)}
+.btn{border:1px solid var(--line);border-radius:13px;padding:11px 15px;background:white;font-weight:800;color:var(--navy)}.primary{background:var(--navy);color:white;border-color:var(--navy)}.wide{width:100%}
+.cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.cat{border:2px solid transparent;border-radius:15px;padding:12px 9px;text-align:left;min-width:0;font-weight:800}.cat.active{border-color:var(--navy);box-shadow:0 0 0 2px white inset}.cat .emoji{font-size:1.7rem}.cat small{display:block;font-weight:500;margin-top:3px}
+.green{background:#e8f6ec;color:#176a37}.yellow{background:#fff4d3;color:#8c6200}.pink{background:#fce8ef;color:#a52250}.blue{background:#e6f5fc;color:#086a91}.purple{background:#f1eaf9;color:#694194}
+.progress{height:10px;background:#e8edf3;border-radius:99px;overflow:hidden}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));transition:width .2s}.stars{display:grid;grid-template-columns:repeat(5,1fr);text-align:center;margin-top:10px;font-size:1.45rem;color:#d6dce5}.stars .on{color:var(--yellow)}
+.card{border-radius:22px;padding:22px;min-height:255px;display:flex;flex-direction:column;justify-content:space-between;border:2px solid var(--green);background:#e8f6ec;margin-bottom:14px}.card h2{font-size:clamp(1.6rem,5vw,2.1rem);line-height:1.1;margin:16px 0 10px;color:var(--navy)}.card p{font-size:1.05rem}.cardmeta{display:flex;justify-content:space-between;gap:8px;font-size:.76rem;font-weight:850;letter-spacing:.06em}
+.chip{display:inline-block;background:#ffffffc9;border-radius:99px;padding:6px 10px;font-size:.78rem;font-weight:750}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.buttons .wide{grid-column:1/-1}
+.playerchips{display:flex;flex-wrap:wrap;gap:7px}.playerchip{border:1px solid var(--line);border-radius:99px;padding:8px 11px;background:white;font-size:.83rem;font-weight:750}.playerchip.current{background:var(--navy);color:white;border-color:var(--navy)}
+.hidden{display:none!important}details summary{cursor:pointer;font-weight:850}details .rules{font-size:.92rem;padding-top:12px}footer{text-align:center;color:var(--muted);font-size:.8rem;padding:10px 0 24px}
+@media(max-width:600px){.wrap{padding:10px}.hero{padding:20px}.panel{padding:14px}.cats{grid-template-columns:repeat(2,minmax(0,1fr))}.cat:last-child{grid-column:1/-1}.split{grid-template-columns:1fr}.buttons{grid-template-columns:1fr}.buttons .wide{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="hero">
+<div class="kicker">LE JEU COOPÉRATIF FAMILIAL</div>
+<h1>La Famille<br><span>en Jeu</span> 💛</h1>
+<p><strong>Des défis, des échanges, des rires.</strong> Ensemble, c’est mieux ! Faites équipe pour mieux vous comprendre, partager les tâches et créer des souvenirs.</p>
+<div class="row"><span class="chip">💬 Échanger</span><span class="chip">🤝 S'entraider</span><span class="chip">😂 Rire</span><span class="chip">💜 Se comprendre</span></div>
+</header>
+
+<section id="setup" class="panel">
+<h2>👋 Bienvenue dans votre équipe !</h2>
+<p class="small">Entrez les prénoms ou surnoms, séparés par des virgules. Les données de partie restent dans cette page et ne sont envoyées à aucun serveur.</p>
+<label for="players">Joueurs et joueuses</label><input id="players" maxlength="180" value="Joueur 1, Joueur 2, Joueur 3">
+<div class="split" style="margin-top:12px">
+<div><label for="duration">Durée</label><select id="duration"><option value="3">Express — 3 défis</option><option value="5" selected>Classique — 5 défis</option><option value="10">Grande aventure — 10 défis</option></select></div>
+<div><label for="goal">Objectif collectif</label><select id="goal"><option value="5">5 étoiles — petite victoire</option><option value="10" selected>10 étoiles — équipe soudée</option><option value="15">15 étoiles — grande aventure</option></select></div>
+</div>
+<button id="start" class="btn primary wide" style="margin-top:14px">🚀 Démarrer l'aventure</button>
+</section>
+
+<section id="play" class="hidden">
+<div class="panel">
+<div class="row" style="justify-content:space-between"><div><div class="small">VOTRE ÉQUIPE</div><h2 id="teamname" style="margin:3px 0">Équipe familiale</h2></div><div style="text-align:right"><div class="small">ÉTOILES COLLECTÉES</div><strong style="font-size:1.7rem;color:#b77b00"><span id="score">0</span> ⭐</strong></div></div>
+<div class="progress" style="margin-top:12px"><div id="progressfill"></div></div>
+<div class="row" style="justify-content:space-between;margin-top:7px"><span id="progresslabel" class="small">Votre aventure commence !</span><span id="goalLabel" class="small">Objectif : 10</span></div>
+<div id="stars" class="stars" aria-label="Progression"></div>
+</div>
+<div class="panel">
+<div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">🎨 Choisissez un univers</h2><button id="random" class="btn">🎲 Au hasard</button></div>
+<div class="cats">
+<button class="cat green" data-cat="echanges"><span class="emoji">💬</span><br>Échanges<small>S'écouter</small></button>
+<button class="cat yellow" data-cat="taches"><span class="emoji">🏡</span><br>Missions<small>S'organiser</small></button>
+<button class="cat pink" data-cat="partage"><span class="emoji">💗</span><br>Entraide<small>Partager</small></button>
+<button class="cat blue" data-cat="rire"><span class="emoji">😂</span><br>Fous rires<small>S'amuser</small></button>
+<button class="cat purple" data-cat="emotions"><span class="emoji">💜</span><br>Émotions<small>Se comprendre</small></button>
+</div>
+</div>
+<div id="currentcard" class="card">
+<div><div class="cardmeta"><span id="cardcat">💬 ÉCHANGES</span><span id="cardnum">DÉFI 1</span></div><div id="turn" style="font-weight:800;margin-top:12px">Au tour de Joueur 1</div><h2 id="cardtitle">Prêts à jouer ?</h2><p id="cardtext">Choisissez une couleur pour piocher votre première carte.</p></div>
+<div class="row"><span id="cardtag" class="chip">À faire ensemble</span><span class="chip">⭐ 1 étoile si vous essayez ensemble</span></div>
+</div>
+<div class="buttons"><button id="done" class="btn primary">⭐ Défi tenté ensemble !</button><button id="pass" class="btn">⏭️ Passer cette carte</button><button id="next" class="btn wide">🃏 Piocher une autre carte</button></div>
+<div class="panel"><h3>👥 À qui le tour ?</h3><div id="turnorder" class="playerchips"></div><p class="small" style="margin-bottom:0">La personne indiquée lit la carte. Les rôles tournent à chaque défi. Chacun peut passer sans se justifier.</p></div>
+<button id="endgame" class="btn wide" style="margin-bottom:16px">🏁 Terminer la partie et faire le bilan</button>
+</section>
+
+<section id="finish" class="panel hidden">
+<div style="font-size:3.3rem;text-align:center">🎉</div><h2 style="text-align:center">Bravo, équipe familiale !</h2><p id="finishtext" style="text-align:center">Chaque petit effort compte.</p>
+<div class="panel" style="background:#fff4d3"><h3>🏆 Votre récompense collective</h3><p id="reward">Choisissez ensemble une activité agréable !</p><button id="newreward" class="btn">🎁 Une autre idée</button></div>
+<h3>💭 Le mini-bilan</h3><p class="small">À tour de rôle, chacun peut répondre à cette question :</p><div id="reflection" class="panel" style="background:#e6f5fc"></div>
+<button id="another" class="btn primary wide">🔄 Rejouer ensemble</button>
+</section>
+
+<details class="panel"><summary>📘 Les règles complètes</summary><div class="rules">
+<p><b>1. Le but :</b> réaliser des défis pour gagner des étoiles en équipe. Personne ne gagne contre les autres.</p>
+<p><b>2. Les catégories :</b> choisissez une couleur selon votre envie ou utilisez « Au hasard ».</p>
+<p><b>3. Une étoile :</b> après avoir tenté un défi ensemble, appuyez sur le bouton d'étoile. Adaptez le défi à votre énergie et à votre situation.</p>
+<p><b>4. Le tour de rôle :</b> la personne indiquée lit la carte. Toute la famille peut participer.</p>
+<p><b>5. Le respect :</b> pas de moquerie, de pression ou de confidences obligatoires. Chacun peut passer ou proposer une alternative.</p>
+<p><b>6. Les tâches :</b> choisissez des missions sûres, réalistes et adaptées à chacun. Le jeu encourage une répartition juste, pas une punition.</p>
+<p><b>7. La fin :</b> faites le mini-bilan et choisissez une récompense collective.</p>
+</div></details>
+<footer>💛 Une famille soudée, c'est une équipe qui apprend ensemble.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const cats={
+echanges:{name:'ÉCHANGES',emoji:'💬',bg:'#e8f6ec',border:'#299b59',ink:'#176a37',tag:'Écouter et se découvrir',cards:[
+['Le petit bilan','Chacun partage un moment agréable de sa semaine. Les autres écoutent sans interrompre.'],
+['Question curieuse','Pose une question bienveillante à quelqu’un : « Qu’aimerais-tu apprendre cette année ? »'],
+['Souvenir commun','Racontez ensemble un souvenir familial drôle ou réconfortant. Chacun ajoute un détail.'],
+['Écoute minute','Une personne parle de ce qui l’occupe. Les autres écoutent, puis résument ce qu’ils ont compris.'],
+['Merci pour ça','Remercie quelqu’un pour une chose précise qu’il a faite récemment.'],
+['On se ressemble ?','Trouvez trois choses que vous avez en commun, puis une différence amusante.'],
+['Le compliment vrai','Offre un compliment sincère sur une qualité, un effort ou une attention.'],
+['Conseil ou écoute ?','Demande à une personne si elle préfère un conseil, une aide concrète ou simplement être écoutée.'],
+['Une envie en famille','Chacun propose une activité simple à faire ensemble. Choisissez-en une à tester.'],
+['La parole circule','Chacun peut compléter : « Pour me sentir soutenu, j’apprécie quand… » Passer son tour est permis.']]},
+taches:{name:'MISSIONS DU QUOTIDIEN',emoji:'🏡',bg:'#fff4d3',border:'#e5a900',ink:'#8c6200',tag:'Coopérer au quotidien',cards:[
+['Sprint collectif','Choisissez une petite zone à ranger ensemble pendant 8 minutes. Répartissez les rôles avant de commencer.'],
+['Table en équipe','Préparez la table à plusieurs. Chacun prend une tâche adaptée et vérifie si quelqu’un a besoin d’aide.'],
+['Mission vaisselle','Faites la vaisselle ou videz le lave-vaisselle en équipe, avec une playlist choisie ensemble.'],
+['Le repas malin','Préparez ensemble un élément du repas : laver les légumes, mélanger, dresser ou ranger ensuite.'],
+['Le panier partagé','Ramassez les objets qui traînent et remettez-les à leur place. Personne ne fait tout seul.'],
+['Qui fait quoi ?','Choisissez une tâche récurrente et décidez d’une répartition claire et réaliste pour la semaine.'],
+['Mini-mission utile','Repérez un petit besoin à la maison et réalisez-le ensemble en sécurité.'],
+['Le linge en relais','Pliez ou triez une petite pile de linge en relais. Chacun choisit une étape.'],
+['Maison accueillante','En 10 minutes, rendez un espace commun plus agréable pour tout le monde.'],
+['Merci, équipe !','Après une tâche partagée, chacun nomme une chose qui a rendu la coopération plus facile.']]},
+partage:{name:'PARTAGE & ENTRAIDE',emoji:'💗',bg:'#fce8ef',border:'#e94378',ink:'#a52250',tag:'S’entraider avec respect',cards:[
+['Coup de main','Demande à quelqu’un : « Quelle petite chose me soulagerait aujourd’hui ? » Si possible, faites-la ensemble.'],
+['Partage équitable','Choisissez une ressource commune et trouvez une règle qui semble juste à tous.'],
+['Le geste discret','Fais une petite attention utile à la famille, comme remplir la carafe ou préparer les affaires communes.'],
+['Je te transmets','Apprends à quelqu’un un savoir-faire que tu connais : une recette, une astuce ou un raccourci pratique.'],
+['Le tour de choix','Pour une activité commune, trouvez une manière équitable de choisir : tirage au sort ou tour de rôle.'],
+['Une idée pour aider','Imaginez une façon de vous simplifier la vie cette semaine. Testez une idée réalisable.'],
+['Partager l’espace','Réorganisez un petit espace commun pour qu’il soit plus facile à utiliser par chacun.'],
+['Le merci en chaîne','Chacun remercie une personne pour une aide ou une qualité, sans obligation de répondre.'],
+['Le relais d’énergie','Une personne choisit une tâche simple, une autre l’aide, puis échangez les rôles si vous le souhaitez.'],
+['Le choix collectif','Décidez ensemble d’une petite activité familiale en tenant compte de ce que chacun préfère.']]},
+rire:{name:'RIRE & AMUSEMENT',emoji:'😂',bg:'#e6f5fc',border:'#159ad0',ink:'#086a91',tag:'S’amuser sans se moquer',cards:[
+['Mime express','Mime un animal, un métier ou un objet sans parler. Les autres ont 30 secondes pour deviner.'],
+['Pub absurde','Inventez une publicité de 20 secondes pour un objet banal de la maison.'],
+['Doublage fou','Inventez les voix d’une scène imaginaire, avec des voix exagérées sans vous moquer de quelqu’un.'],
+['Histoire à plusieurs','Chacun ajoute une phrase à une histoire qui commence par : « Un matin, le grille-pain annonça… »'],
+['Défi dessin','Dessinez un chat les yeux fermés en 20 secondes. Comparez les dessins, pas les talents !'],
+['Mot interdit','Pendant deux minutes, racontez votre journée sans utiliser le mot « oui ». Si vous le dites, choisissez un autre mot.'],
+['Danse minute','Choisissez une chanson et inventez ensemble trois mouvements. Personne n’est obligé de danser.'],
+['Le slogan familial','Inventez un slogan amusant pour votre équipe familiale et dites-le tous ensemble.'],
+['Objet détourné','Trouvez trois usages imaginaires à un objet ordinaire. Chaque idée reçoit un applaudissement.'],
+['Affiche de film','Prenez une pose de groupe comme si vous étiez l’affiche d’un film d’aventure. Vous pouvez aussi la mimer.']]},
+emotions:{name:'ÉMOTIONS',emoji:'💜',bg:'#f1eaf9',border:'#8152b7',ink:'#694194',tag:'Se comprendre sans pression',cards:[
+['Météo intérieure','Chacun peut décrire son humeur avec une météo : soleil, nuages, vent, éclaircie… Aucun détail n’est obligatoire.'],
+['Pause utile','Ensemble, prenez trois respirations lentes et relâchez les épaules. Chacun peut proposer une autre pause calme.'],
+['Besoin du moment','Complète si tu le souhaites : « Aujourd’hui, j’aurais besoin de… » Les autres peuvent demander comment aider.'],
+['Le feu tricolore','Vert : ce qui va bien. Orange : ce qui demande de l’attention. Rouge : ce qui doit attendre ou être discuté calmement.'],
+['Quand ça monte','Choisissez un signal familial pour demander une pause quand une discussion devient trop tendue.'],
+['Sans jugement','Chacun nomme une chose qui l’aide à se calmer ou retrouver de l’énergie. Pas de commentaire ni de comparaison.'],
+['Changer de perspective','Imaginez ce qu’une personne pourrait ressentir dans une situation difficile. Proposez une phrase empathique.'],
+['Mon petit progrès','Chacun peut citer un effort récent, même petit, dont il est content. On célèbre l’effort, pas la perfection.'],
+['Réparer le lien','Entraînez-vous à dire : « Je n’ai pas aimé ce qui s’est passé. Est-ce qu’on peut en reparler calmement ? »'],
+['J’ai le droit de passer','Chacun peut partager ce qui lui fait du bien en famille, ou dire simplement « je passe ».']]}}
+const rewards=['Une soirée jeux choisie ensemble 🎲','Une balade ou un pique-nique 🌳','Un repas ou dessert préparé en équipe 🍓','Une playlist et un moment musique 🎵','Une soirée film avec choix partagé 🎬','Un mini-tournoi de jeux drôles 😂','Un atelier créatif à plusieurs 🎨','Une heure sans écrans pour une activité choisie 💛'];
+const reflections=['Quel moment m’a fait du bien ?','Qu’est-ce qu’un membre de l’équipe a fait qui m’a aidé ?','Quel défi aimerais-je refaire ?','Qu’est-ce qui nous a fait rire ?','Comment pourrions-nous nous faciliter la vie cette semaine ?'];
+let players=[],turn=0,score=0,goal=10,limit=5,round=0,used={},selected='echanges',current=null,rewardIndex=0;
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(){players=$('players').value.split(',').map(s=>s.trim()).filter(Boolean).slice(0,12);if(!players.length)players=['Joueur 1','Joueur 2'];limit=+$('duration').value;goal=+$('goal').value;turn=score=round=0;used={};Object.keys(cats).forEach(k=>used[k]=shuffle(cats[k].cards.map((_,i)=>i)));$('setup').classList.add('hidden');$('finish').classList.add('hidden');$('play').classList.remove('hidden');$('teamname').textContent='Équipe de '+players.length+' joueur'+(players.length>1?'s':'');$('goalLabel').textContent='Objectif : '+goal;renderTurns();renderStars();drawCard('echanges');window.scrollTo({top:0,behavior:'smooth'})}
+function renderTurns(){$('turnorder').replaceChildren();players.forEach((p,i)=>{let b=document.createElement('button');b.className='playerchip'+(i===turn?' current':'');b.textContent=(i===turn?'👉 ':'')+p;b.onclick=()=>{turn=i;renderTurns();$('turn').textContent='Au tour de '+players[turn]+' de lire la carte.'};$('turnorder').append(b)})}
+function renderStars(){$('score').textContent=score;$('progressfill').style.width=Math.min(100,score/goal*100)+'%';$('progresslabel').textContent=score>=goal?'Objectif atteint ! Bravo !':(goal-score)+' étoile(s) pour votre objectif';$('stars').replaceChildren();for(let i=0;i<Math.min(goal,15);i++){let s=document.createElement('span');s.className=i<score?'on':'';s.textContent=i<score?'★':'☆';$('stars').append(s)}}
+function drawCard(k){selected=k||selected;document.querySelectorAll('#family-game .cat').forEach(b=>b.classList.toggle('active',b.dataset.cat===selected));if(!used[selected]||!used[selected].length)used[selected]=shuffle(cats[selected].cards.map((_,i)=>i));let idx=used[selected].pop(),d=cats[selected],card=d.cards[idx];current=card;$('currentcard').style.background=d.bg;$('currentcard').style.borderColor=d.border;$('cardcat').style.color=d.ink;$('cardcat').textContent=d.emoji+' '+d.name;$('cardnum').textContent='DÉFI '+(round+1)+' / '+limit;$('turn').textContent='Au tour de '+players[turn]+' de lire la carte.';$('cardtitle').textContent=card[0];$('cardtext').textContent=card[1];$('cardtag').textContent=d.tag}
+function advance(k){round++;turn=(turn+1)%players.length;if(round>=limit){finish();return}renderTurns();renderStars();drawCard(k||selected)}
+function finish(){$('play').classList.add('hidden');$('finish').classList.remove('hidden');$('finishtext').textContent='Vous avez tenté '+round+' défi(s) et gagné '+score+' étoile(s) ensemble. Chaque effort compte !';rewardIndex=Math.floor(Math.random()*rewards.length);$('reward').textContent=rewards[rewardIndex];$('reflection').textContent=reflections[Math.floor(Math.random()*reflections.length)];window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('#family-game .cat').forEach(b=>b.addEventListener('click',()=>drawCard(b.dataset.cat)));
+$('start').addEventListener('click',start);
+$('random').addEventListener('click',()=>drawCard(Object.keys(cats)[Math.floor(Math.random()*5)]));
+$('done').addEventListener('click',()=>{if(!current)return;score++;renderStars();advance()});
+$('pass').addEventListener('click',()=>advance());
+$('next').addEventListener('click',()=>advance());
+$('endgame').addEventListener('click',finish);
+$('newreward').addEventListener('click',()=>{rewardIndex=(rewardIndex+1+Math.floor(Math.random()*(rewards.length-1)))%rewards.length;$('reward').textContent=rewards[rewardIndex]});
+$('another').addEventListener('click',()=>{$('finish').classList.add('hidden');$('setup').classList.remove('hidden');$('play').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})});
+if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;let b=document.createElement('button');b.id='installBtn';b.className='btn primary wide';b.style.marginBottom='14px';b.textContent='📲 Installer La Famille en Jeu';document.querySelector('main').insertBefore(b,document.querySelector('footer'));b.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;b.remove()},{once:true})});
+</script>
+</body>
+</html>
